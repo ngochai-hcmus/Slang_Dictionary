@@ -36,6 +36,24 @@ public class SlangWord {
         return this.slangWord.get(word);
     }
 
+    public List<String> searchByDefinition(String word){
+        // Handle the input word
+        String lowWord = word.toLowerCase();
+        String upWord = word.toUpperCase();
+        String capitalizedWord = lowWord.substring(0, 1).toUpperCase() + lowWord.substring(1);
+
+        List<String> result = new ArrayList<String>();
+        Set<Map.Entry<String, Set<String>>> entrySet = this.slangWord.entrySet(); // Get list of <Slang, Set<Definitions> pairs
+        for(Map.Entry<String,Set<String>> entry: entrySet){
+            Set<String> definite = entry.getValue(); // Get set <Definitions> of each slang word
+            for (String def : definite){
+                if (def.contains(lowWord) || def.contains(upWord) || def.contains(word) || def.contains(capitalizedWord)) // Check the cases of the input word
+                    result.add(entry.getKey());
+            }
+        }
+        return result;
+    }
+
     public static void main(String[] args) throws IOException {
         SlangWord word = new SlangWord();
         word.readSlangWord("src/slang.txt");
