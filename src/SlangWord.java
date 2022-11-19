@@ -28,8 +28,6 @@ public class SlangWord {
 
                 Set<String> def = new HashSet<String>(Arrays.asList(syn)); // Append processed data to treemap
                 (this.slangWord).put(content[0], def);
-                System.out.println(content[0]);
-                System.out.println(def);
             }
             bufferedReader.close();
         } else {
@@ -128,8 +126,18 @@ public class SlangWord {
         readSlangWord("src/slang.txt");
     }
 
+    // 8. Function random 1 slang word (On this day slang word)
+    public String randomSlangWord() {
+        Object[] Keys = this.slangWord.keySet().toArray();
+        int index = new Random().nextInt(Keys.length);
+        String slangWordRandom = (String) Keys[index];
+        return slangWordRandom + "  " + this.slangWord.get(slangWordRandom);
+    }
+
     public static void main(String[] args) throws IOException {
         SlangWord word = new SlangWord();
         word.readSlangWord("src/slang.txt");
+        String random = word.randomSlangWord();
+        System.out.println(random);
     }
 }
