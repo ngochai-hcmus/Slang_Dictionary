@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="409c0b06-459e-4a92-a30e-b2ff73319ab2" name="Changes" comment="feat: create menu for console">
+    <list default="true" id="409c0b06-459e-4a92-a30e-b2ff73319ab2" name="Changes" comment="feat: add reset feature for console">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/SlangWord.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/SlangWord.java" afterDir="false" />
     </list>
@@ -99,7 +99,14 @@
       <option name="project" value="LOCAL" />
       <updated>1668873908929</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="feat: add reset feature for console">
+      <created>1668874215090</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1668874215090</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -122,6 +129,7 @@
     <MESSAGE value="feat: random 1 slang word function" />
     <MESSAGE value="feat: quiz function" />
     <MESSAGE value="feat: create menu for console" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: create menu for console" />
+    <MESSAGE value="feat: add reset feature for console" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: add reset feature for console" />
   </component>
 </project>

@@ -191,7 +191,7 @@ public class SlangWord {
 
         System.out.println("Your result:");
         for(String s : result){
-            System.out.println(s + " " + this.slangWord.get(s));
+            System.out.println(s + " : " + this.slangWord.get(s));
         }
         System.out.print("Press enter to continue: ");
         scanner.nextLine();
@@ -207,7 +207,7 @@ public class SlangWord {
 
         System.out.println("Your result:");
         for(String s : result){
-            System.out.println(s + " " + this.slangWord.get(s));
+            System.out.println(s + " : " + this.slangWord.get(s));
         }
         System.out.print("Press enter to continue: ");
         scanner.nextLine();
@@ -285,7 +285,62 @@ public class SlangWord {
         scanner.nextLine();
     }
 
+    public void RunRandomSlangWord() throws IOException {
+        String slangWord = this.randomSlangWord();
+        System.out.println(slangWord + " : " + this.slangWord.get(slangWord));
 
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Press enter to continue: ");
+        scanner.nextLine();
+    }
+
+    public void RunQuizSlangWord() {
+        Map<String, Set<String>> quiz = this.createQuiz();
+        List<String> listKey = new ArrayList<>(quiz.keySet());
+        int index = new Random().nextInt(4);
+        System.out.println(" Question: " + listKey.get(index));
+        System.out.println(" (1): " + this.slangWord.get(listKey.get(0)));
+        System.out.println(" (2): " + this.slangWord.get(listKey.get(1)));
+        System.out.println(" (3): " + this.slangWord.get(listKey.get(2)));
+        System.out.println(" (4): " + this.slangWord.get(listKey.get(3)));
+
+        int answer;
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Input your answer: ");
+        answer = Integer.parseInt(scanner.nextLine());
+        if(answer == index + 1){
+            System.out.println("Correct!");
+        }
+        else{
+            System.out.println("Wrong! - True answer is: " + (index+1) );
+        }
+        System.out.print("Press enter to continue: ");
+        scanner.nextLine();
+    }
+
+    public void RunQuizDefinition() {
+        Map<String, Set<String>> quiz = this.createQuiz();
+        List<String> listKey = new ArrayList<>(quiz.keySet());
+        int index = new Random().nextInt(4);
+        System.out.println(" Question: " + this.slangWord.get(listKey.get(index)));
+        System.out.println(" (1): " + listKey.get(0));
+        System.out.println(" (2): " + listKey.get(1));
+        System.out.println(" (3): " + listKey.get(2));
+        System.out.println(" (4): " + listKey.get(3));
+
+        int answer;
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Input your answer: ");
+        answer = Integer.parseInt(scanner.nextLine());
+        if(answer == index + 1){
+            System.out.println("Correct!");
+        }
+        else{
+            System.out.println("Wrong! - True answer is: " + (index+1) );
+        }
+        System.out.print("Press enter to continue: ");
+        scanner.nextLine();
+    }
 
     public static void main(String[] args) throws IOException {
         SlangWord word = new SlangWord("src/SlangTest.txt");
@@ -335,10 +390,13 @@ public class SlangWord {
                     word.RunResetOriginalSlangWord();
                     break;
                 case 8: //Random a slang word
+                    word.RunRandomSlangWord();
                     break;
                 case 9: //Quiz slang word
+                    word.RunQuizSlangWord();
                     break;
                 case 10: //Quiz definition
+                    word.RunQuizDefinition();
                     break;
                 case 11: //Exit
                     return;
@@ -346,17 +404,5 @@ public class SlangWord {
                     continue;
             }
         }
-//        SlangWord word = new SlangWord("src/SlangTest.txt");
-//        word.readSlangWord();
-//        Set<String> definition = new HashSet<String>();
-//        definition.add("hi");
-//        definition.add("haha");
-//        word.addSlangWord("HB", definition);
-//        //word.editSlangWord("HBz", definition);
-//        word.print();
-//
-//        word.resetOriginalSlangWord();
-//
-//        word.print();
     }
 }
