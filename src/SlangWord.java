@@ -181,18 +181,171 @@ public class SlangWord {
         return quiz;
     }
 
+    public void RunSearchBySlangWord(){
+        String slangWord = new String();
+        System.out.print("Input your slang word: ");
+        Scanner scanner = new Scanner(System.in);
+        slangWord = scanner.nextLine();
+
+        List<String> result = this.searchBySlangWord(slangWord);
+
+        System.out.println("Your result:");
+        for(String s : result){
+            System.out.println(s + " " + this.slangWord.get(s));
+        }
+        System.out.print("Press enter to continue: ");
+        scanner.nextLine();
+    }
+
+    public void RunSearchByDefinition(){
+        String slangWord = new String();
+        System.out.print("Input your definition: ");
+        Scanner scanner = new Scanner(System.in);
+        slangWord = scanner.nextLine();
+
+        List<String> result = this.searchByDefinition(slangWord);
+
+        System.out.println("Your result:");
+        for(String s : result){
+            System.out.println(s + " " + this.slangWord.get(s));
+        }
+        System.out.print("Press enter to continue: ");
+        scanner.nextLine();
+    }
+
+    public void RunDisplayHistory(){
+        System.out.println("Your history:");
+        for (String s: this.historyWord) {
+            System.out.println(s);
+        }
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Press enter to continue: ");
+        scanner.nextLine();
+    }
+
+    public void RunAddSlangWord(){
+        // e la a
+        String slangWord, definition;
+        Set<String> setOfDefinition = new HashSet<String>();
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Input slang word: ");
+        slangWord = scanner.nextLine();
+        System.out.print("Input definition: ");
+        definition = scanner.nextLine();
+
+        String[] syn = definition.split(","); // Split <Definitions> if they have many meaning.
+        for (String s : syn) {
+            setOfDefinition.add(s.trim());
+        }
+
+        addSlangWord(slangWord, setOfDefinition);
+
+        System.out.print("Press enter to continue: ");
+        scanner.nextLine();
+    }
+
+    public void RunEditSlangWord(){
+        // e la a
+        String slangWord, definition;
+        Set<String> setOfDefinition = new HashSet<String>();
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Input slang word: ");
+        slangWord = scanner.nextLine();
+        System.out.print("Input definition: ");
+        definition = scanner.nextLine();
+
+        String[] syn = definition.split(","); // Split <Definitions> if they have many meaning.
+        for (String s : syn) {
+            setOfDefinition.add(s.trim());
+        }
+
+        editSlangWord(slangWord, setOfDefinition);
+
+        System.out.print("Press enter to continue: ");
+        scanner.nextLine();
+    }
+
+    public void RunDeleteSlangWord(){
+        String slangWord;
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Input slang word: ");
+        slangWord = scanner.nextLine();
+
+        this.deleteSlangWord(slangWord);
+
+        System.out.print("Press enter to continue: ");
+        scanner.nextLine();
+    }
+
     public static void main(String[] args) throws IOException {
         SlangWord word = new SlangWord("src/SlangTest.txt");
         word.readSlangWord();
-        Set<String> definition = new HashSet<String>();
-        definition.add("hi");
-        definition.add("haha");
-        word.addSlangWord("HB", definition);
-        //word.editSlangWord("HBz", definition);
-        word.print();
+        int choice;
 
-        word.resetOriginalSlangWord();
+        while(true) {
+            System.out.println("-------------------------------------------------------------------------------------------------------");
+            System.out.println("|                                         Slang Dictionary                                            |");
+            System.out.println("|                01. Search by slang word                                                             |");
+            System.out.println("|                02. Search by definition                                                             |");
+            System.out.println("|                03. Display history                                                                  |");
+            System.out.println("|                04. Add a new slang word                                                             |");
+            System.out.println("|                05. Edit a slang word                                                                |");
+            System.out.println("|                06. Delete a slang word                                                              |");
+            System.out.println("|                07. Reset                                                                            |");
+            System.out.println("|                08. Random a slang word                                                              |");
+            System.out.println("|                09. Quiz slang word                                                                  |");
+            System.out.println("|                10. Quiz definition                                                                  |");
+            System.out.println("|                11. Exit                                                                             |");
+            System.out.println("|                                                                                                     |");
+            System.out.println("-------------------------------------------------------------------------------------------------------");
+            System.out.print("\nInput your choice: ");
+            Scanner scanner = new Scanner(System.in);
+            choice = Integer.parseInt(scanner.nextLine());
 
-        word.print();
+            switch (choice){
+                case 1: //Search by slang word
+                    word.RunSearchBySlangWord();
+                    break;
+                case 2: //Search by definition
+                    word.RunSearchByDefinition();
+                    break;
+                case 3: //Display history
+                    word.RunDisplayHistory();
+                    break;
+                case 4: //Add a new slang word
+                    word.RunAddSlangWord();
+                    break;
+                case 5: //Edit a slang word
+                    word.RunEditSlangWord();
+                    break;
+                case 6: //Delete a slang word
+                    word.RunDeleteSlangWord();
+                    break;
+                case 7: //Reset
+                    break;
+                case 8: //Random a slang word
+                    break;
+                case 9: //Quiz slang word
+                    break;
+                case 10: //Quiz definition
+                    break;
+                case 11: //Exit
+                    return;
+                default:
+                    continue;
+            }
+        }
+//        SlangWord word = new SlangWord("src/SlangTest.txt");
+//        word.readSlangWord();
+//        Set<String> definition = new HashSet<String>();
+//        definition.add("hi");
+//        definition.add("haha");
+//        word.addSlangWord("HB", definition);
+//        //word.editSlangWord("HBz", definition);
+//        word.print();
+//
+//        word.resetOriginalSlangWord();
+//
+//        word.print();
     }
 }
