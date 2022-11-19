@@ -2,43 +2,79 @@ import java.io.*;
 import java.util.*;
 
 public class SlangWord {
-    private final TreeMap<String, Set<String>> slangWord;
-    private TreeMap<String, Set<String>> historyWord;
-    private TreeMap<String, Set<String>> deletedWord;
+    private String FilePath = new String();
+    private final TreeMap<String, Set<String>> slangWord  = new TreeMap<String, Set<String>>();
+    private final List<String> historyWord = new ArrayList<String>();
+    private final TreeMap<String, Set<String>> deletedWord = new TreeMap<String, Set<String>>();
 
-    public SlangWord() {
-        this.slangWord = new TreeMap<String, Set<String>>();
+    public SlangWord(String path){
+        this.FilePath = path;
+    }
+
+    public void addSlangWord(String word, String definition){
+        Set<String> setOfDefinition = new HashSet<String>();
+        if(!this.slangWord.containsKey(word)){
+            setOfDefinition.add(definition);
+        }
+        else {
+            setOfDefinition = this.slangWord.get(word);
+            setOfDefinition.add(definition) ;
+        }
+        this.slangWord.put(word, setOfDefinition);
     }
 
     // Read file to slangWord
-    public void readSlangWord(String fileName) throws IOException {
-        File f = new File(fileName);
+    public void readSlangWord() throws IOException {
+        File f = new File(this.FilePath);
         if (f.exists()) {
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName));
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(this.FilePath));
             this.slangWord.clear();
+            this.historyWord.clear();
             String line;
             while ((line = bufferedReader.readLine()) != null) {
-                String[] content = line.split("(`)"); // Split a line to <Slang> and <Definitions>
+                String[] content = line.split("`"); // Split a line to <Slang> and <Definitions>
                 if (content.length != 2)
                     continue;
                 String[] syn = content[1].split("\\|"); // Split <Definitions> if they have many meaning.
-                for (int i = 0; i < syn.length; i++) {
-                    syn[i] = syn[i].trim();
+                for (String s : syn) {
+                    addSlangWord(content[0], s.trim());
                 }
 
-                Set<String> def = new HashSet<String>(Arrays.asList(syn)); // Append processed data to treemap
-                (this.slangWord).put(content[0], def);
+//                Set<String> def = new HashSet<String>(Arrays.asList(syn)); // Append processed data to treemap
+//                (this.slangWord).put(content[0], def);
             }
             bufferedReader.close();
         } else {
             System.out.println("File not found!");
         }
     }
+    public void readSlangWord(String filePath) throws IOException {
+        this.FilePath = filePath;
+        readSlangWord();
+    }
+
+    public void print() {
+        System.out.println(this.slangWord);
+    }
+
 
     // 1. Search function by slang word
-    public Set<String> searchBySlangWord(String word) {
-        this.historyWord.put(word, this.slangWord.get(word));
-        return this.slangWord.get(word);
+    public List<String> searchBySlangWord(String word) {
+        this.historyWord.add(word);
+
+        // Handle the input word
+        String lowWord = word.toLowerCase();
+        String upWord = word.toUpperCase();
+
+        List<String> result = new ArrayList<String>();
+        Set<Map.Entry<String, Set<String>>> entrySet = this.slangWord.entrySet(); // Get list of <Slang, Set<Definitions> pairs
+        for(Map.Entry<String,Set<String>> entry: entrySet){
+            String slangWord = entry.getKey();
+            if (slangWord.startsWith(lowWord) || slangWord.startsWith(upWord)) {
+                result.add(slangWord);
+            }
+        }
+        return result;
     }
 
     // 2. Search function by definition, displays all the slang words that in the definition contain the keyword typed.
@@ -61,7 +97,7 @@ public class SlangWord {
     }
 
     // 3. Function to display history, list of searched slang words.
-    public TreeMap<String, Set<String>> displayHistory() {
+    public List<String> displayHistory() {
         return this.historyWord;
     }
 
@@ -104,7 +140,6 @@ public class SlangWord {
     // 6. Function delete 1 slang word. Confirm before deleting.
     public void deleteSlangWord(String word) {
         if (this.slangWord.containsKey(word)) { // Check if the slang word find
-            System.out.println("(1) Delete (2) Cancel: ");
             Scanner scanner = new Scanner(System.in);
             int choice = 0;
             do {
@@ -112,7 +147,7 @@ public class SlangWord {
                 choice = Integer.parseInt(scanner.nextLine()); // Choose choice 1: Overwrite, choice 2: Duplicate
             } while (choice != 1 && choice != 2);
             if (choice == 1) {
-                this.historyWord.put(word,this.slangWord.get(word));
+                this.deletedWord.put(word, this.slangWord.get(word));
                 this.slangWord.remove(word);
             }
         }
@@ -123,21 +158,41 @@ public class SlangWord {
 
     // 7. Function to reset the original list of slang words
     public void resetOriginalSlangWord() throws IOException {
-        readSlangWord("src/slang.txt");
+        readSlangWord();
     }
 
     // 8. Function random 1 slang word (On this day slang word)
     public String randomSlangWord() {
-        Object[] Keys = this.slangWord.keySet().toArray();
-        int index = new Random().nextInt(Keys.length);
-        String slangWordRandom = (String) Keys[index];
-        return slangWordRandom + "  " + this.slangWord.get(slangWordRandom);
+        Object[] slangWords = this.slangWord.keySet().toArray();
+        int index = new Random().nextInt(slangWords.length);
+        return (String) slangWords[index];
+    }
+
+    // 9. 10. Quiz function
+    public Map<String, Set<String>> createQuiz() {
+        Map<String, Set<String>> quiz = new TreeMap<String, Set<String>>();
+        String randomWord = new String();
+        for (int i = 0; i < 4; i++) {
+            do {
+                randomWord = randomSlangWord();
+            }while (quiz.containsKey(randomWord));
+            quiz.put(randomWord,this.slangWord.get(randomWord));
+        }
+        return quiz;
     }
 
     public static void main(String[] args) throws IOException {
-        SlangWord word = new SlangWord();
-        word.readSlangWord("src/slang.txt");
-        String random = word.randomSlangWord();
-        System.out.println(random);
+        SlangWord word = new SlangWord("src/SlangTest.txt");
+        word.readSlangWord();
+        Set<String> definition = new HashSet<String>();
+        definition.add("hi");
+        definition.add("haha");
+        word.addSlangWord("HB", definition);
+        //word.editSlangWord("HBz", definition);
+        word.print();
+
+        word.resetOriginalSlangWord();
+
+        word.print();
     }
 }
