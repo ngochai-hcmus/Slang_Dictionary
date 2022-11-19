@@ -123,6 +123,11 @@ public class SlangWord {
         }
     }
 
+    // 7. Function to reset the original list of slang words
+    public void resetOriginalSlangWord() throws IOException {
+        readSlangWord("src/slang.txt");
+    }
+
     public static void main(String[] args) throws IOException {
         SlangWord word = new SlangWord();
         word.readSlangWord("src/slang.txt");
