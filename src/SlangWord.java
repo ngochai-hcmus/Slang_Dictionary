@@ -277,6 +277,16 @@ public class SlangWord {
         scanner.nextLine();
     }
 
+    public void RunResetOriginalSlangWord() throws IOException {
+        this.resetOriginalSlangWord();
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Press enter to continue: ");
+        scanner.nextLine();
+    }
+
+
+
     public static void main(String[] args) throws IOException {
         SlangWord word = new SlangWord("src/SlangTest.txt");
         word.readSlangWord();
@@ -322,6 +332,7 @@ public class SlangWord {
                     word.RunDeleteSlangWord();
                     break;
                 case 7: //Reset
+                    word.RunResetOriginalSlangWord();
                     break;
                 case 8: //Random a slang word
                     break;
